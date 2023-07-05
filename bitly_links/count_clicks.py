@@ -8,12 +8,9 @@ clicked on it:
 ex. Total clicks on https://bit.ly/46lV7aP:  11
 
 """
-
 import os
 from urllib.parse import urlparse
 import requests
-
-token = os.getenv('BITLY_TOKEN')
 
 
 def shorten_link(token, link):
@@ -37,19 +34,23 @@ def count_clicks(token, bitlink):
 
 def main():
     link = input('Enter a link: ')
-    trimmed_link = f'{urlparse(link).netloc}{urlparse(link).path}'
+    token = os.environ['BITLY_TOKEN']
+    parsed_link = urlparse(link)
+    trimmed_link = f'{parsed_link.netloc}{parsed_link.path}'
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{trimmed_link}'
     resp = requests.get(url, headers={'Authorization': f'Bearer {token}'})
     try:
         if resp.ok:
             number_of_clicks = count_clicks(token, trimmed_link)
-            result = f'\nTotal clicks on {link}:  {number_of_clicks} \n'
+            script_output = f'\nTotal clicks on {link}:  {number_of_clicks} \n'
         else:
             link = shorten_link(token, link)
-            result = f'\nShort link: {link} \n'
+            script_output = f'\nShort link: {link} \n'
     except requests.exceptions.HTTPError:
-        result = "\nThe link you entered is incorrect or API isn't responding\n"
-    print(result)
+        script_output = (
+            "\nThe link you entered is incorrect or API isn't responding\n"
+            )
+    print(script_output)
 
 
 if __name__ == '__main__':
