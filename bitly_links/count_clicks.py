@@ -8,9 +8,21 @@ clicked on it:
 ex. Total clicks on https://bit.ly/46lV7aP:  11
 
 """
+import argparse
 import os
-from urllib.parse import urlparse
 import requests
+from dotenv import load_dotenv
+from urllib.parse import urlparse
+load_dotenv()
+
+
+def parse_arguments():
+    parser = argparse.ArgumentParser(
+        description='This is script for shortening web-links'
+    )
+    parser.add_argument('link', help='Link to process')
+    args = parser.parse_args()
+    return args
 
 
 def shorten_link(token, link):
@@ -33,7 +45,7 @@ def count_clicks(token, bitlink):
 
 
 def main():
-    link = input('Enter a link: ')
+    link = parse_arguments().link
     token = os.environ['BITLY_TOKEN']
     parsed_link = urlparse(link)
     trimmed_link = f'{parsed_link.netloc}{parsed_link.path}'
