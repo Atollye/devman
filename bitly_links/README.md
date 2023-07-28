@@ -21,7 +21,8 @@ ex. Total clicks on https://bit.ly/46lV7aP:  11
 
 2. Register at https://bitly.com and get personal token (*Settings > API > Generate token*)
 
-3. Set environment token variable
+3. Set environment token variable.
+   
 To do so, execute 
 `export BITLY_TOKEN='[your token from bitly]'`
 before you run the script
