@@ -1,0 +1,10 @@
+.env
+__pycache__/
+.pytest_chache/
+*pycache*
+*pyc
+*chache
+.vscode/
+_todo/*
+my_venv/*
+**other**
