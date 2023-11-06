@@ -26,3 +26,7 @@ ex. Total clicks on https://bit.ly/46lV7aP:  11
 To do so, execute 
 `export BITLY_TOKEN='[your token from bitly]'`
 before you run the script
+
+4. Launch
+`./count_clicks.py [YOUR LINK]`
+

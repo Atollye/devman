@@ -7,13 +7,14 @@ If the link already exists, the script returns how many times people
 clicked on it:
 ex. Total clicks on https://bit.ly/46lV7aP:  11
 
+usage: ./count_clicks.py [YOUR LINK]
+
 """
 import argparse
 import os
 import requests
 from dotenv import load_dotenv
 from urllib.parse import urlparse
-load_dotenv()
 
 
 def parse_arguments():
@@ -44,11 +45,7 @@ def count_clicks(token, bitlink):
     return response.json()['total_clicks']
 
 
-def main():
-    link = parse_arguments().link
-    token = os.environ['BITLY_TOKEN']
-    parsed_link = urlparse(link)
-    trimmed_link = f'{parsed_link.netloc}{parsed_link.path}'
+def is_bitlink(link, trimmed_link, token):
     url = f'https://api-ssl.bitly.com/v4/bitlinks/{trimmed_link}'
     resp = requests.get(url, headers={'Authorization': f'Bearer {token}'})
     try:
@@ -58,10 +55,21 @@ def main():
         else:
             link = shorten_link(token, link)
             script_output = f'\nShort link: {link} \n'
+
     except requests.exceptions.HTTPError:
         script_output = (
             "\nThe link you entered is incorrect or API isn't responding\n"
             )
+    return script_output
+
+
+def main():
+    link = parse_arguments().link
+    load_dotenv()
+    token = os.environ['BITLY_TOKEN']
+    parsed_link = urlparse(link)
+    trimmed_link = f'{parsed_link.netloc}{parsed_link.path}'
+    script_output = is_bitlink(link, trimmed_link, token)
     print(script_output)
 
 
